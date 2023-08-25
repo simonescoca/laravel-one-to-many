@@ -1,11 +1,13 @@
 <?php
 
 namespace Database\Seeders;
+use App\Models\Type;
 use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
+
 
 class ProjectsSeeder extends Seeder
 {
@@ -14,8 +16,12 @@ class ProjectsSeeder extends Seeder
      */
     public function run(Faker $faker): void
     {
-        for ($i=0 ; $i < 100 ; $i++) {
+
+        $typeIds = Type::all()->pluck('id');
+
+        for ($i = 0 ; $i < 100 ; $i++) {
             $newProject = new Project();
+            $newProject->type_id = $faker->randomElement($typeIds);
             $newProject->title = ucfirst($faker->unique()->words(7, true));
             $newProject->content = $faker->paragraphs(10, true);
             $newProject->url = $faker->url();
